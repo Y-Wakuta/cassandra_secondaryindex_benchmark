@@ -1,7 +1,7 @@
 version: '2'
 services:
   cassandra:
-    container_name: cassandra_secondaryindex
+    container_name: cassandra_2nd_index
     build: ./cassandra
     ports:
       - '7000:7000'

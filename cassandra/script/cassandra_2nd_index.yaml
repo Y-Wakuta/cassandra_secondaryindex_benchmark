@@ -1,0 +1,36 @@
+keyspace: bench
+
+keyspace_definition: |
+  CREATE KEYSPACE bench WITH replication = {'class' : 'SimpleStrategy', 'replication_factor': 1};
+
+
+#table作成
+table: users_id_index,users_first_name_index
+
+table_definition: |
+ - CREATE TABLE IF NOT EXISTS users_id_index(
+      userid text PRIMARY KEY,
+      first_name text,
+      last_name text
+   );
+
+  - CREATE TABLE IF NOT EXISTS users_first_name_index(
+      userid text,
+      first_name text PRIMARY KEY,
+      last_name text
+    );
+
+
+#insertについて設定.ここが一番良くわからない
+insert:
+  partitions: fixed(1)
+  batchtype: UNLOGGED
+
+queries:
+  read1:
+  cql: SELECT * FROM users_id_index WHERE userid = ?
+  fields: samerow #ここもよくわからない
+
+  # read2:
+  # cql: SELECT * FROM users_first_name_index WHERE first_name = ?
+  # fields: samerow #上と同じくよくわからない
