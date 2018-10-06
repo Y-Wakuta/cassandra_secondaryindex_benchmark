@@ -1,0 +1,11 @@
+version: '2'
+services:
+  cassandra:
+    container_name: cassandra_secondaryindex
+    build: ./cassandra
+    ports:
+      - '7000:7000'
+      - '7001:7001'
+      - '7199:7199'
+      - '9042:9042'
+      - '9160:9160'
