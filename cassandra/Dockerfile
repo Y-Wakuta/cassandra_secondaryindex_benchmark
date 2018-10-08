@@ -14,4 +14,5 @@ RUN apt-get install -y vim
 RUN mkdir -p /opt/cassandra/schema
 RUN mkdir -p /opt/cassandra/sample
 
-COPY ./script /home/tools
+WORKDIR /home/tools
+

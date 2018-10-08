@@ -3,6 +3,8 @@ services:
   cassandra:
     container_name: cassandra_2nd_index
     build: ./cassandra
+    volumes:
+      - "./cassandra/script:/home/tools"
     ports:
       - '7000:7000'
       - '7001:7001'
