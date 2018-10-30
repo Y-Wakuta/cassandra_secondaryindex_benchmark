@@ -1,3 +1,7 @@
+####################################################
+#no_2nd_index.yaml
+####################################################
+
 ### DML ###
 
 # Keyspace Name
@@ -19,27 +23,15 @@ table_definition: |
    );
 
 ### Column Distribution Specifications ###
- 
-#columnspec:
-#  - name: domain
-#    size: gaussian(5..100)       #domain names are relatively short
-#    population: uniform(1..10M)  #10M possible domains to pick from
-#
-#  - name: published_date
-#    cluster: fixed(1000)         #under each domain we will have max 1000 posts
-#
-#  - name: url
-#    size: uniform(30..300)       
-#
-#  - name: title                  #titles shouldn't go beyond 200 chars
-#    size: gaussian(10..200)
-#
-#  - name: author
-#    size: uniform(5..20)         #author names should be short
-#
-#  - name: body
-#    size: gaussian(100..5000)    #the body of the blog post can be long
-   
+columnspec:
+  - name: userid
+    size: uniform(5..100)       #domain names are relatively short
+    population: uniform(1..10M)  #10M possible domains to pick from
+
+  - name: first_name
+    size: uniform(30..300)
+#    cluster: fixed(1000)         #under each domain we will have max 1000 posts #今回は単独のクラスタで処理を行いたいので設定しない
+
 ### Batch Ratio Distribution Specifications ###
 
 insert:
@@ -54,6 +46,6 @@ insert:
 # A list of queries you wish to run against the schema
 #
 queries:
-   get_by_first_name: 
+   get_by_first_name:
       cql: SELECT * FROM users WHERE first_name = ? ALLOW FILTERING;
       fields: samerow

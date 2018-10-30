@@ -1,15 +1,15 @@
 function recho { echo -e "\e[1;31m $* \e[m"; }
+function drop_keyspace { cqlsh -e "DROP KEYSPACE IF EXISTS $*;"; recho "$* dropped."; }
 
-ops_sum=10000
+ops_sum=1,000,000
 file_name=./bench_graph.html
 
-cqlsh -e "DROP KEYSPACE IF EXISTS bench;"
 
+drop_keyspace "bench"
 recho "no index"
-cassandra-stress user profile=./no_2nd_index.yaml n=$ops_sum ops\(insert=1,get_by_first_name=1\)  no-warmup cl=QUORUM -graph file=$file_name title=bench revision=no_index
+cassandra-stress user profile=./no_2nd_index.yaml n=$ops_sum ops\(insert=3,get_by_first_name=1\) cl=QUORUM -graph file=$file_name title=bench revision=no_index
 
-cqlsh -e "DROP KEYSPACE IF EXISTS bench;"
+drop_keyspace "bench"
 recho "with index"
-cassandra-stress user profile=./with_2nd_index.yaml n=$ops_sum ops\(insert=1,get_by_first_name=1\)  no-warmup cl=QUORUM -graph file=$file_name title=bench revision=with_index
-
-cqlsh -e "DROP KEYSPACE IF EXISTS bench;"
+cassandra-stress user profile=./with_2nd_index.yaml n=$ops_sum ops\(insert=3,get_by_first_name=1\) cl=QUORUM -graph file=$file_name title=bench revision=with_index
+drop_keyspace "bench"
