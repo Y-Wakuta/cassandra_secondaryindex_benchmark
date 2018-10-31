@@ -1,7 +1,7 @@
 function recho { echo -e "\e[1;31m $* \e[m"; }
 function drop_keyspace { cqlsh -e "DROP KEYSPACE IF EXISTS $*;"; recho "$* dropped."; }
 
-ops_sum=1,000,000
+ops_sum=1000000
 file_name=./bench_graph.html
 
 
