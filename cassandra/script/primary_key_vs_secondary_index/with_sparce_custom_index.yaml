@@ -24,7 +24,7 @@ table_definition: |
 
 ## define secondary index
 extra_definitions:
-  - CREATE INDEX IF NOT EXISTS fname ON users(userid_4_2ndary_index);
+        - CREATE CUSTOM INDEX IF NOT EXISTS fname ON users(userid_4_2ndary_index) USING 'org.apache.cassandra.index.sasi.SASIIndex' WITH OPTIONS = {'mode': 'SPARSE'};
 
 ### Column Distribution Specifications ###
 columnspec:
