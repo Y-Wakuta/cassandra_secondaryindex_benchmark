@@ -1,7 +1,7 @@
 version: '2'
 services:
   cassandra:
-    container_name: cassandra_2nd_index
+    container_name: cassandra_2nd_index_wakuta
     build: ./cassandra
     volumes:
       - "./cassandra/script:/home/tools"
