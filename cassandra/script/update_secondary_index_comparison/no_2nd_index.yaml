@@ -1,0 +1,51 @@
+####################################################
+#no_2nd_index.yaml
+####################################################
+
+### DML ###
+
+# Keyspace Name
+keyspace: bench
+
+# The CQL for creating a keyspace (optional if it already exists)
+keyspace_definition: |
+  CREATE KEYSPACE bench WITH replication = {'class': 'SimpleStrategy', 'replication_factor': 1};
+
+# Table name
+table: users
+
+# The CQL for creating a table you wish to stress (optional if it already exists)
+table_definition: |
+   CREATE TABLE IF NOT EXISTS users(
+     userid text PRIMARY KEY,
+     first_name text,
+     last_name text
+   );
+
+### Column Distribution Specifications ###
+columnspec:
+  - name: userid
+    size: uniform(5..100)       #domain names are relatively short
+    population: uniform(1..10M)  #10M possible domains to pick from
+
+  - name: first_name
+    size: uniform(30..300)
+#    cluster: fixed(1000)         #under each domain we will have max 1000 posts #今回は単独のクラスタで処理を行いたいので設定しない
+
+### Batch Ratio Distribution Specifications ###
+
+insert:
+  partitions: fixed(1)            # Our partition key is the domain so only insert one per batch
+
+  select:    fixed(1)/1000        # We have 1000 posts per domain so 1/1000 will allow 1 post per batch
+
+  batchtype: UNLOGGED             # Unlogged batches
+
+
+#
+# A list of queries you wish to run against the schema
+#
+queries:
+   get_by_first_name:
+      cql: SELECT * FROM users WHERE first_name = ? ALLOW FILTERING;
+      fields: samerow
